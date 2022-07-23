@@ -13,7 +13,7 @@ function take_snapshot(){
     });
 }
 
-classifier=ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/i1AXCGSBp/model.json',modelLoaded);
+classifier=ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/hynF472ie/model.json',modelLoaded);
 function modelLoaded(){
     console.log('modelLoaded');
 }
@@ -23,4 +23,42 @@ function speak(){
     speak_data_2="and the second prediction is" +prediction_2;
     var utterThis=new SpeechSynthesisUtterance(speak_data_1+speak_data_2);
     synth.speak(utterThis);
+}
+function check(){
+    img=document.getElementById("capture_image");
+    classifier.classify(img,gotResult);
+
+}
+function gotResult(error,results){
+if(error){
+    console.error(error);
+}
+else{
+    console.log(results);
+    document.getElementById("result_emotion_name").innerHTML=results[0].label;
+    document.getElementById("result_emotion_name2").innerHTML=results[1].label;
+    prediction_1=results[0].label;
+    prediction_2=results[1].label;
+    speak();
+    if(prediction_1=="angry"){
+        document.getElementById("update_emoji").innerHTML="&#128545;";
+    }
+    if(prediction_1=="sad"){
+        document.getElementById("update_emoji").innerHTML="&#128532;";
+    }
+    if(prediction_1=="happy"){
+        document.getElementById("update_emoji").innerHTML="&#128522;";
+    }
+    if(prediction_2=="angry"){
+        document.getElementById("update_emoji2").innerHTML="&#128545;";
+    }
+    if(prediction_2=="sad"){
+        document.getElementById("update_emoji2").innerHTML="&#128532;";
+    }
+    if(prediction_2=="happy"){
+        document.getElementById("update_emoji2").innerHTML="&#128522;";
+    }
+}
+
+
 }
